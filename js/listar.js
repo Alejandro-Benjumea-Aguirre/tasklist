@@ -1,26 +1,28 @@
 let tarea = document.getElementById('tarea');
 
-function listarTareas() {
-    fetch("./controllers/listar.php", {
-        method: "POST"
-    })
-    .then((res) => {
-        if (!res.ok) {
+async function listarTareas() {
+
+    try {
+        const response = await fetch("./controllers/listar.php", {
+            method: "POST"
+        });
+
+        if (!response.ok) {
             throw new Error(`Error al obtener las tareas: ${res.status} ${res.statusText}`);
         }
-        return res.json(); // Suponiendo que el servidor devuelve datos JSON
-    })
-    .then((data) => {
+
+        const data = await response.json();
+
         if (data.length > 0) {
             mostrarTareas(data);
         } else {
             tarea.innerHTML = mostrarMensaje("No hay tareas creadas en estos momentos.", 'success');
         }
-    })
-    .catch(err => {
+        
+    } catch (error) {
         console.error("Error al obtener las tareas:", err);
         tarea.innerHTML = mostrarMensaje("Ocurrió un error al cargar las tareas. Por favor, inténtalo de nuevo más tarde.", 'warning');
-    });
+    }
 }
 
 function mostrarTareas(tareas) {
