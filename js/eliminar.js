@@ -8,6 +8,10 @@ async function eliminar(id) {
             body: id
         });
 
+        if (!response.ok) {
+            throw new Error(`Error al obtener las tareas: ${res.status} ${res.statusText}`);
+        }
+
         const data = await response.json();
 
         if(data === 'ok'){
