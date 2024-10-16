@@ -43,14 +43,14 @@ async function actualizar(id) {
             <br>
             <button type="submit" class="btn btn-primary">Actualizar</button>
         </div>
-        `
+        `;
 
         idt.value = response.id;
         nombre.value = response.nombre;
         descripcion.value = response.descripcion;
         
     } catch (error) {
-        console.error("Error al actualizar la tarea:", err);
+        console.error("Error al actualizar la tarea: ", err);
         respuesta.innerHTML = mostrarMensaje("Ocurrió un error al actualizar la tarea. Por favor, inténtalo de nuevo más tarde.", 'warning');
     }
         
