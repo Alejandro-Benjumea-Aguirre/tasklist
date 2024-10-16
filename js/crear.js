@@ -12,7 +12,7 @@ formulario.addEventListener('submit', async function(e) {
         });
     
         if (!response.ok) {
-            throw new Error(`Error al obtener las tareas: ${res.status} ${res.statusText}`);
+            throw new Error(`Error al crear la tareas: ${response.status} ${response.statusText}`);
         }
     
         let data = await response.json();

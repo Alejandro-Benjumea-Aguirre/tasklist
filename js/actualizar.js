@@ -1,11 +1,18 @@
 let formulario = document.getElementById('formulario');
 
-function actualizar(id) {
-    fetch("./controllers/actualizar.php", {
-        method: "POST",
-        body: id
-    }).then(res => res.json())
-    .then((res) => {
+async function actualizar(id) {
+
+    try {
+
+        let response = await fetch("./controllers/actualizar.php", {
+            method: "POST",
+            body: id
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error al actualizar la tarea: ${response.status} ${response.statusText}`);
+        }
+
         formulario.innerHTML = `
         <div class="animate__animated animate__fadeIn">
             <div class = "form-group">
@@ -21,13 +28,13 @@ function actualizar(id) {
             <fieldset class="form-group">
                 <legend class="mt-4">Estado</legend>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="realizada" name="realizada" id="realizada" ${(res.id_estado==='2')?'checked': ''}>
+                    <input class="form-check-input" type="checkbox" value="realizada" name="realizada" id="realizada" ${(response.id_estado==='2')?'checked': ''}>
                     <label class="form-check-label" for="flexCheckDefault">
                         Realizada
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="cancelada" name="cancelada" id="cancelada" ${(res.id_estado==='3')?'checked':''}> 
+                    <input class="form-check-input" type="checkbox" value="cancelada" name="cancelada" id="cancelada" ${(response.id_estado==='3')?'checked':''}> 
                     <label class="form-check-label" for="flexCheckChecked">
                         Cancelada
                     </label>
@@ -38,9 +45,13 @@ function actualizar(id) {
         </div>
         `
 
-        idt.value = res.id;
-        nombre.value = res.nombre;
-        descripcion.value = res.descripcion;
-
-    });
+        idt.value = response.id;
+        nombre.value = response.nombre;
+        descripcion.value = response.descripcion;
+        
+    } catch (error) {
+        console.error("Error al actualizar la tarea:", err);
+        respuesta.innerHTML = mostrarMensaje("Ocurrió un error al actualizar la tarea. Por favor, inténtalo de nuevo más tarde.", 'warning');
+    }
+        
 }
